@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-# Name:
-# Student number:
+# Name: Liora Rosenberg
+# Student number: 11036435
 """
 This script scrapes IMDB and outputs a CSV file with highest rated movies.
 """
@@ -56,7 +56,7 @@ def extract_movies(dom):
 
     # extracting information about year of release
     list_year_of_release = []
-    year_of_releases = dom.find_all('span', class_= "lister-item-year")
+    year_of_releases = dom.find_all('span', class_="lister-item-year")
     for year_of_release in year_of_releases:
         list_year_of_release.append(year_of_release.string.strip('()')[-4:])
 
@@ -67,15 +67,8 @@ def extract_movies(dom):
         if runtime.get('class') is not None and "runtime" in runtime.get('class'):
             list_runtime.append(runtime.string.strip(' min'))
 
-    # straks weghalen
-    print(list_title)
-    print(list_actor)
-    print(list_rating)
-    print(list_year_of_release)
-    print(list_runtime)
-    print(len(list_actor))
-
     return [list_title, list_rating, list_year_of_release, list_actor, list_runtime]
+
 
 def save_csv(outfile, movies):
     """
@@ -87,6 +80,7 @@ def save_csv(outfile, movies):
     # movies are assigned to disk
     for movie in range(len(movies[0])):
         writer.writerow([movies[0][movie], movies[1][movie], movies[2][movie], movies[3][movie], movies[4][movie]])
+
 
 def simple_get(url):
     """

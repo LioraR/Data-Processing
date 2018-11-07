@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # Name: Liora Rosenberg
-# Student number: 110
+# Student number: 11036435
 """
 This script visualizes data obtained from a .csv file
 """
@@ -25,12 +25,12 @@ with open('movies.csv', newline='') as csvfile:
         data_dict[row['Year']].append(float(row['Rating']))
 
 # make list for x and y-axis
-x=[]
-y=[]
+x = []
+y = []
 
 # calculate the average rating per year
 for year in data_dict:
-    value =data_dict[year]
+    value = data_dict[year]
     average_rating = sum(value)/len(value)
     x.append(year)
     y.append(average_rating)
@@ -42,7 +42,7 @@ plt.suptitle('Average Movie Rating per Year', fontsize=16, fontweight='bold')
 plt.xlabel('Year', fontsize=12, fontweight='bold')
 plt.ylabel('Rating', fontsize=12, fontweight='bold')
 
-#background color
+# background color
 ax = plt.gca()
 ax.set_facecolor('#b0fc64')
 
