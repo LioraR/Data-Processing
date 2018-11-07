@@ -1,0 +1,3 @@
+git add .
+git commit -m "een leuk bericht over wat je gedaan hebt"
+git push
