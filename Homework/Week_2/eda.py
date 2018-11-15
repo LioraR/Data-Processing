@@ -66,7 +66,7 @@ def five_number_summary(reader):
     """
     calculate the five_number_summary of Infant mortality
     """
-    five_number_summary = reader['Infant mortality (per 1000 births)'].describe()[["min","25%", "50%", "75%", "max"]]
+    five_number_summary = reader['Infant mortality (per 1000 births)'].describe()[["min", "25%", "50%", "75%", "max"]]
     print(five_number_summary)
 
 
@@ -93,7 +93,6 @@ def jason(reader):
 
     reader = reader.set_index('Country')
     reader.to_json('x.json', orient="index")
-    # json.dump()
 
 
 if __name__ == "__main__":
