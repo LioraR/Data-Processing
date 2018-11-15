@@ -22,7 +22,7 @@ def cleaner(filename):
     reader['Infant mortality (per 1000 births)'] =\
         pandas.to_numeric(reader['Infant mortality (per 1000 births)'],  errors='coerce')
 
-    reader.replace("unkown", None)
+    reader = reader.replace("unkown", None)
 
     return reader
 
