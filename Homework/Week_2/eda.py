@@ -8,7 +8,7 @@ INPUT_CSV = 'input.csv'
 
 def cleaner(filename):
     """
-    load data into pandas DataFrame and preprocess the row GDP so only numbers remain
+    load data into pandas DataFrame and preprocess the rows
     """
     reader = pandas.read_csv(filename)
 
@@ -21,6 +21,8 @@ def cleaner(filename):
         reader['Infant mortality (per 1000 births)'].str.replace(",", ".")
     reader['Infant mortality (per 1000 births)'] =\
         pandas.to_numeric(reader['Infant mortality (per 1000 births)'],  errors='coerce')
+
+    reader.replace("unkown", None)
 
     return reader
 
@@ -64,7 +66,7 @@ def five_number_summary(reader):
     """
     calculate the five_number_summary of Infant mortality
     """
-    five_number_summary = reader['Infant mortality (per 1000 births)'].describe()
+    five_number_summary = reader['Infant mortality (per 1000 births)'].describe()[["min","25%", "50%", "75%", "max"]]
     print(five_number_summary)
 
 
@@ -72,7 +74,6 @@ def boxplot(reader):
     """
     create a boxplot
     """
-    print(type(reader['Infant mortality (per 1000 births)']))
     plt.style.use('ggplot')
     reader['Infant mortality (per 1000 births)'].plot.box()
     plt.title('by Liora Rosenberg')
@@ -92,6 +93,7 @@ def jason(reader):
 
     reader = reader.set_index('Country')
     reader.to_json('x.json', orient="index")
+    # json.dump()
 
 
 if __name__ == "__main__":
