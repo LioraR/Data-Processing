@@ -151,7 +151,6 @@ txtFile.onreadystatechange = function() {
           if (yearM > 20171200 && yearM <2018000){
             yearM = yearM +8900
           }
-
           if (parseInt(datums[i]) === yearM && yearM < 20171200 && yearM > 2018000) {
             yearM = yearM + 100
             context.moveTo(GRAPH_RIGHT / datums.length + GRAPH_LEFT, GRAPH_BOTTOM)
