@@ -142,25 +142,44 @@ txtFile.onreadystatechange = function() {
         context.strokeStyle = "#BBB";
         context.stroke();
 
+        // context.fillText("X", (cWidth + cleftMargin) /2, cHeight);
+        // context.fillText("Length (min)", -(cHeight +cTopMargin) / 2, CleftMargin)
+
         maand = date.substring(5,7)
         year = date.substring(0,4)
         yearM = 20171101
-        context.beginPath();
-        for (var i = 0; i < datums.length; i++){
-          console.log(yearM)
-          if (yearM > 20171200 && yearM <2018000){
-            yearM = yearM +8900
-          }
-          if (parseInt(datums[i]) === yearM && yearM < 20171200 && yearM > 2018000) {
-            yearM = yearM + 100
-            context.moveTo(GRAPH_RIGHT / datums.length + GRAPH_LEFT, GRAPH_BOTTOM)
-            context.lineTo(GRAPH_RIGHT / datums.length + GRAPH_LEFT, GRAPH_TOP)
-            //context.front
-            context.fillText(maand + "-" + year, GRAPH_RIGHT / datums.length + GRAPH_LEFT, GRAPH_BOTTOM)
 
+        var canvas = document.getElementById( "Canvas" );
+        var ctx = canvas.getContext( "2d" );
+
+        for (var x = 0; x < 10; x++)
+        {
+          console.log(x);
+          ctx.moveTo(0 + 48 * x, 0)
+          ctx.lineTo(0 + 48 * x, 480)
+          ctx.fillText(maand + "-" + year, GRAPH_RIGHT / datums.length + GRAPH_LEFT, GRAPH_BOTTOM)
         }
-    }
-    context.stroke();
+        ctx.stroke();
+
+        // context.beginPath();
+    //     for (var i = 0; i < datums.length; i++){
+    //       console.log(yearM)
+    //       if (yearM > 20171200 && yearM <2018000){
+    //         yearM = yearM +8900
+    //       }
+    //       if (parseInt(datums[i]) === yearM) {
+    //         console.log(124124);
+    //         yearM = yearM + 100
+    //         context.moveTo(GRAPH_RIGHT + yearM, GRAPH_BOTTOM)
+    //         context.lineTo(GRAPH_RIGHT + yearM, GRAPH_TOP)
+    //         //context.front
+    //         context.fillText(maand + "-" + year, GRAPH_RIGHT / datums.length + GRAPH_LEFT, GRAPH_BOTTOM)
+    //
+    //     }
+    // }
+
+
+
   }
 }
 
