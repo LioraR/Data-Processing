@@ -1,3 +1,6 @@
 git add .
 git commit -m "een leuk bericht over wat je gedaan hebt"
 git push
+
+
+git pull : als er een file moet openen uit een bestand
