@@ -20,7 +20,7 @@ var svg = d3.select("body").append('svg')
 const tooltip = d3.select("body").append("div").attr("class", "toolTip")
 
 // distract jason
-d3.json("data.json").then(function(data) {
+d3.json("renewable_energy.json").then(function(data) {
 
     // dimensions chart
     barWidth = (width - 2 * margin) / Object.keys(data).length;

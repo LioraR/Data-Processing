@@ -5,7 +5,7 @@ import pandas
 import csv
 import json
 
-INPUT_CSV = "data.csv"
+INPUT_CSV = "renewable_energy.csv"
 reader = pandas.read_csv(INPUT_CSV)
 
 # remove data
@@ -16,4 +16,4 @@ reader = reader.loc[reader['LOCATION'] == 'AUS']
 print(reader)
 
 reader = reader.set_index('TIME')
-reader = reader.to_json('data.json', orient="index")
+reader = reader.to_json('renewable_energy.json', orient="index")
