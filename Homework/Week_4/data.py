@@ -8,10 +8,10 @@ import json
 INPUT_CSV = "data.csv"
 reader = pandas.read_csv(INPUT_CSV)
 
-
-# snijden data
+# remove data
 reader = reader.loc[reader['MEASURE'] == 'PC_PRYENRGSUPPLY']
-reader = reader.drop(["INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "Flag Codes"], axis=1)
+reader = reader.drop(["INDICATOR", "SUBJECT", "MEASURE", "FREQUENCY", "Flag Codes"],
+                     axis=1)
 reader = reader.loc[reader['LOCATION'] == 'AUS']
 print(reader)
 
