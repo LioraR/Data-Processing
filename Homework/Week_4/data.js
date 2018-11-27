@@ -62,6 +62,23 @@ d3.json("data.json").then(function(data) {
                 .style("display", "inline-block")
                 .html(data[d]["Value"]);
         })
+        .on('mouseover', function(d){
+					tooltip.transition()
+						.style('opacity', 1)
+
+					tooltip.html(d)
+						.style('left', (d3.event.pageX)+ 'px')
+						.style('top', (d3.event.pageY+ 'px'))
+
+					d3.select(this).style('opacity', 0.5)
+				})
+			   .on('mouseout', function(d){
+			   	tooltip.transition()
+			   		.style('opacity', 0)
+			   	d3.select(this).style('opacity', 1)
+			   })
+
+
 
 
     // make value labels
