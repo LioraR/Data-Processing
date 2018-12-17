@@ -3,7 +3,7 @@
 //  this file
 
 // dimensions
-var margin = {top: 0, right: 0, bottom: 0, left: 50},
+var margin = {top: 50, right: 50, bottom: 50, left: 50},
             width = screen.width - margin.left - margin.right,
             height = 650 - margin.top - margin.bottom;
 var padding = 20;
@@ -33,9 +33,9 @@ window.onload = function() {
 
                     // als landen niet undifined zijn
                     if (Health[d.properties.name] !== undefined){
-                      console.log(d.properties.name);
+//                      console.log(d.properties.name);
 
-                      console.log(Health);
+  //                    console.log(Health);
 
                       income = Health[d.properties.name]["Household net adjusted disposable income"]
                       life_expectancy = Health[d.properties.name]["Life expectancy"]
@@ -111,8 +111,15 @@ window.onload = function() {
                   .style("opacity", 0.8)
                   .style("stroke","white")
                   .style("stroke-width",0.3);
-              });
+              })
+              .on('click', function(d){
+                console.log(d)
+                country = d.properties.name
+                console.log(country)
+                lineChart(country)
+              })
 
+              console.log(life)
         svg.append("path")
             .datum(topojson.mesh(data.features, function(a, b) { return a.name !== b.name; }))
             .attr("class", "names")
@@ -143,44 +150,122 @@ window.onload = function() {
                 return d;
               })
 
-
-              // alles wat hieronder staat werkt nog niet!!!!!
               //(life["Afghanistan"]) = (Object.values(life)[0])
-              console.log(life)
-              console.log(Object.keys(life).length)
-              console.log(Object.values(life))
-              console.log(Object.values(Object.values(life)))
               //landen = object.keys(life)
               console.log(Object.keys(life))
+
+              // select the dict with life_expectancy and years
+              grandList = []
+              listY = []
+              listLE = []
               for (i = 0; i < Object.keys(life).length; i++) {
                 lifeAndTime = Object.values(life)[i]
+                lifeE = Object.values(lifeAndTime)
+                years = Object.keys(lifeAndTime)
+
+                listY.push(years)
+                // console.log(listY)
+                listLE.push(lifeE)
+                // console.log(listLE)
+                grandList.push(listY, listLE)
               }
+              console.log(listLE)
 
-              console.log(lifeAndTime)
 
 
-              // scaling
-              var max = Math.max.apply(null, Object.values(life))
-              var minCC = Math.min.apply(null, allConsConf)
-              var maxCC = Math.max.apply(null, allConsConf)
 
-              var xScale = d3.scaleLinear()
-              .domain([0, max])
-              .range([margin, width - margin - 120])
 
-              var yScale = d3.scaleLinear()
-              .domain([minCC, maxCC])
-              .range([height - margin, margin])
 
-        // make line chart
-        g.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
-        .attr("stroke-width", 1.5)
-        .attr("d", line);
+              function lineChart(country="Afghanistan"){
+                // verwijder oude grafiek (inclusief assen)
+                console.log(country);
+                console.log(typeof(country))
+                // create SVG element
+                var svg_line = d3.select("body")
+                        .append("svg")
+                        .attr("width", width)
+                        .attr("height", height)
+                        .style('background', 'wit');
+
+
+                // scaling
+                // var min =
+                // var max = Math.max.apply(null, Object.values(life))
+                // var minLE = Math.min.apply(null, lifeexpectancy)
+                // var maxLE = Math.max.apply(null, lifeexpectancy)
+
+                var xScale = d3.scaleLinear()
+                .domain([2000, 2017])
+                .range([margin.right, width - margin.left - 120])
+
+                var yScale = d3.scaleLinear()
+                .domain([70, 80])
+                .range([height - margin.bottom, margin.top])
+
+                // make y-as
+                var yAxis = d3.axisLeft(yScale);
+                svg_line.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + [margin.top, 0] + ")")
+                .call(yAxis)
+
+                // make x-as
+                var xAxis = d3.axisBottom(xScale);
+                svg_line.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + [0, height - margin.top] + ")")
+                .call(xAxis)
+
+
+      console.log(life[country]);
+
+      // testdata = []
+      // for (i = 2000; i < 2017; i++) {
+      //
+      //   lifeAndTime = Object.values(life)[country][i];
+      //   var obj = {};
+      //   obj['year'] = i;
+      //   obj['lifeexp'] = lifeAndTime;
+      //   testdata.push(obj)
+
+      // }
+      // console.log(testdata);
+
+
+    console.log(life[country])
+      var dataset = life[country];
+
+      // 7. d3's line generator
+      var line = d3.line()
+          .x(function(d, i) { return xScale(d.year); }) // set the x values for the line generator
+          .y(function(d) { return yScale(d.lifeexp); }) // set the y values for the line generator
+          .curve(d3.curveMonotoneX) // apply smoothing to the line
+
+
+
+      // 9. Append the path, bind the data, and call the line generator
+      svg_line.append("path")
+          .datum(dataset) // 10. Binds data to the line
+          .attr("class", "line") // Assign a class for styling
+          .attr("d", line); // 11. Calls the line generator
+
+      // // 12. Appends a circle for each datapoint
+      // svg_line.selectAll(".dot")
+      //     .data(dataset)
+      //   .enter().append("circle") // Uses the enter().append() method
+      //     .attr("class", "dot") // Assign a class for styling
+      //     .attr("cx", function(d, i) { return xScale(i) })
+      //     .attr("cy", function(d) { return yScale(d.y) })
+      //     .attr("r", 5)
+      //       .on("mouseover", function(a, b, c) {
+      //   			console.log(a)
+      //         this.attr('class', 'focus')
+      // 		})
+      //       .on("mouseout", function() {  })
+
+                  }
+
+
 
     }).catch(function(e){
         throw(e);
