@@ -24,4 +24,4 @@ https://data.worldbank.org/indicator/SP.DYN.LE00.IN?end=2016&start=1960&view=cha
 http://bl.ocks.org/micahstubbs/8e15870eb432a21f0bc4d3d527b2d14f
 http://bl.ocks.org/micahstubbs/raw/8e15870eb432a21f0bc4d3d527b2d14f/a45e8709648cafbbf01c78c76dfa53e31087e713/world_countries.json
 
-In mijn localhost wordt er wel een linechart gemaakt als ik op een land klik maar op de website hierboven niet. Ik snap niet hoe dat komt. 
+In mijn localhost wordt er wel een linechart gemaakt als ik op een land klik maar op de website hierboven niet. Ik snap niet hoe dat komt. Verder heb ik ook een interactief onderdeel bij mijn linechart maar ook deze is niet zichtbaar. 
