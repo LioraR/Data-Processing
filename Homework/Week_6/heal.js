@@ -10,8 +10,11 @@ var padding = 20;
 
 window.onload = function() {
 
+  // distract jasons
   var life = "life.json"
   var health = "health.json"
+
+  // http://bl.ocks.org/micahstubbs/raw/8e15870eb432a21f0bc4d3d527b2d14f/a45e8709648cafbbf01c78c76dfa53e31087e713/world_countries.json
   var data = "world_countries.json"
   var requests = [d3.json(health), d3.json(data), d3.json(life)];
 
@@ -19,9 +22,6 @@ window.onload = function() {
       var Health = response[0];
       var data = response[1];
       var life = response[2];
-      console.log(data);
-      console.log(Health);
-      console.log(life)
 
       var format = d3.format(",");
 
@@ -31,20 +31,17 @@ window.onload = function() {
                   .offset([-10, 0])
                   .html(function(d) {
 
-                    // als landen niet undifined zijn
+                    // only select countries were data exist
                     if (Health[d.properties.name] !== undefined){
-//                      console.log(d.properties.name);
-
-  //                    console.log(Health);
 
                       income = Health[d.properties.name]["Household net adjusted disposable income"]
                       life_expectancy = Health[d.properties.name]["Life expectancy"]
-
 
                       return "<strong>Country: </strong><span class='details'>" + d.properties.name + "<br></span>"+ "<strong>Income: </strong><span class='details'>" + income +"<br></span>" + "<strong>Life expectancy: </strong><span class='details'>" + life_expectancy +"</span>";
                     }
                   })
 
+      // the colors were picked at this website: http://colorbrewer2.org/#type=sequential&scheme=Blues&n=9
       var color = d3.scaleThreshold()
           .domain([10,20,30,40,50,60,70,80,90,100])
           .range(["rgb(247,251,255)", "rgb(222,235,247)", "rgb(198,219,239)", "rgb(158,202,225)", "rgb(107,174,214)", "rgb(66,146,198)","rgb(33,113,181)","rgb(8,81,156)","rgb(8,48,107)","rgb(3,19,43)"]);
@@ -81,9 +78,8 @@ window.onload = function() {
           .enter().append("path")
             .attr("d", path)
             .style("fill", function(d) {
-              console.log(d.properties.name)
+              //console.log(d.properties.name)
               // als een land niet in de data voorkomt, maak het wit
-              console.log(Health)
               if (Health[d.properties.name] !== undefined){
                   return (color(Health[d.properties.name]["Life expectancy"]));
               }
@@ -113,11 +109,13 @@ window.onload = function() {
                   .style("stroke-width",0.3);
               })
               .on('click', function(d){
+                d3.select("#chart").selectAll("*").remove().exit()
                 console.log(d)
                 country = d.properties.name
                 console.log(country)
                 lineChart(country)
               })
+
 
               console.log(life)
         svg.append("path")
@@ -172,34 +170,24 @@ window.onload = function() {
               console.log(listLE)
 
 
-
-
+              // create SVG element
+              var svg_line = d3.select("body")
+                      .append("svg")
+                      .attr("id", "chart")
+                      .attr("width", width)
+                      .attr("height", height)
+                      .style('background', 'wit');
 
 
               function lineChart(country="Afghanistan"){
-                // verwijder oude grafiek (inclusief assen)
-                console.log(country);
-                console.log(typeof(country))
-                // create SVG element
-                var svg_line = d3.select("body")
-                        .append("svg")
-                        .attr("width", width)
-                        .attr("height", height)
-                        .style('background', 'wit');
 
-
-                // scaling
-                // var min =
-                // var max = Math.max.apply(null, Object.values(life))
-                // var minLE = Math.min.apply(null, lifeexpectancy)
-                // var maxLE = Math.max.apply(null, lifeexpectancy)
-
+                // scaling x and y-as
                 var xScale = d3.scaleLinear()
-                .domain([2000, 2017])
+                .domain([2000, 2016])
                 .range([margin.right, width - margin.left - 120])
 
                 var yScale = d3.scaleLinear()
-                .domain([70, 80])
+                .domain([50, 90])
                 .range([height - margin.bottom, margin.top])
 
                 // make y-as
@@ -216,56 +204,75 @@ window.onload = function() {
                 .attr("transform", "translate(" + [0, height - margin.top] + ")")
                 .call(xAxis)
 
+      // select life expectancy and year from dictonary
+      testdata = []
+      for (i = 2000; i < 2017; i++) {
 
-      console.log(life[country]);
+        lifeAndTime = Object.values(life[country])[i - 2000];
+        var obj = {};
+        obj['year'] = i;
+        obj['lifeexp'] = lifeAndTime;
+        testdata.push(obj)
 
-      // testdata = []
-      // for (i = 2000; i < 2017; i++) {
-      //
-      //   lifeAndTime = Object.values(life)[country][i];
-      //   var obj = {};
-      //   obj['year'] = i;
-      //   obj['lifeexp'] = lifeAndTime;
-      //   testdata.push(obj)
+      }
 
-      // }
-      // console.log(testdata);
+      var dataset = testdata
 
-
-    console.log(life[country])
-      var dataset = life[country];
-
-      // 7. d3's line generator
+      // use date from:  https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
+      // d3's line generator
       var line = d3.line()
           .x(function(d, i) { return xScale(d.year); }) // set the x values for the line generator
           .y(function(d) { return yScale(d.lifeexp); }) // set the y values for the line generator
           .curve(d3.curveMonotoneX) // apply smoothing to the line
 
-
-
-      // 9. Append the path, bind the data, and call the line generator
+      // append the path, bind the data, and call the line generator
       svg_line.append("path")
           .datum(dataset) // 10. Binds data to the line
           .attr("class", "line") // Assign a class for styling
           .attr("d", line); // 11. Calls the line generator
 
-      // // 12. Appends a circle for each datapoint
-      // svg_line.selectAll(".dot")
-      //     .data(dataset)
-      //   .enter().append("circle") // Uses the enter().append() method
-      //     .attr("class", "dot") // Assign a class for styling
-      //     .attr("cx", function(d, i) { return xScale(i) })
-      //     .attr("cy", function(d) { return yScale(d.y) })
-      //     .attr("r", 5)
-      //       .on("mouseover", function(a, b, c) {
-      //   			console.log(a)
-      //         this.attr('class', 'focus')
-      // 		})
-      //       .on("mouseout", function() {  })
+          // Set tooltips
+          var toolTip = d3.tip()
+                      .attr('class', 'd3-tip')
+                      .offset([-10, 0])
+                      .html(function(d) {
+                        console.log(d)
+
+                        // only select countries were data exist
+                        if (Object.keys(life) !== undefined) {
+                          console.log(Object.keys(Health))
+                          // && (Object.keys(life) == Object.keys(Health)))
+                          // &&Object.keys(life) == Object.keys(Health))
+                          console.log(Object.keys(life))
+
+                           return "<strong>year: </strong><span class='details'>" + d["year"] + "<br></span>"+ "<strong>Life expectancy: </strong><span class='details'>" + d["lifeexp"] +"</span>";
+                        }
+                      })
+      svg_line.call(toolTip);
+
+      // appends a circle for each datapoint
+      svg_line.selectAll(".dot")
+          .data(dataset)
+        .enter().append("circle")
+          .attr("class", "dot") // Assign a class for styling
+          .attr("cx", function(d, i) { return xScale(d.year) })
+          .attr("cy", function(d) { return yScale(d.lifeexp) })
+          .attr("r", 5)
+            .on("mouseover", function(d) {
+                console.log(d)
+                toolTip.show(d);
+
+              d3.select(this)
+                .style("opacity", 1)
+                .style("stroke","white")
+                .style("stroke-width",3);
+
+      		})
+            .on('mouseout', function(d){
+                toolTip.hide(d);
+          })
 
                   }
-
-
 
     }).catch(function(e){
         throw(e);
