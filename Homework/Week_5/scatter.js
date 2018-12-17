@@ -7,7 +7,6 @@ var width = screen.width - 30;
 var height = 250;
 var margin = 50;
 var barheight = 0;
-var barWidth;
 
 
 window.onload = function() {
@@ -62,10 +61,13 @@ function main(response){
 
   });
 
+  //data = {}
   // remove incomplete row in list
   grandList.forEach(function(point, i) {
     if (point.length !== 4) {
       grandList.splice(i, 1)
+      //data[year[i]] = consConfP[count], women[count], country[count]
+      //count++
     }
   });
 
@@ -168,9 +170,28 @@ function main(response){
           return d;
         })
 
+      var dims = 10
+      var a = 100;
+      var b = dims.width + dims.margin + dims.margin;
+
+      var years = Object.keys(data).maps(x => parseInt(x));
+
+      var thisYear = d3.min(years);
+
+      var slider = d3.sliderHorizontal()
+                     .min(d3.min(years))
+                     .max(d3.max(years))
+                     .step(1)
+                     .width(dims.width)
+                     .tickValues(years)
+                     .tickFormat(d3.format("d"))
+                     .on("onchange", function(year){
+                       thisYear - year;
+                     });
+
 }
 
-// function that transforms jason in appropriated format 
+// function that transforms jason in appropriated format
 function transformResponse(data){
 
     // access data property of the response
