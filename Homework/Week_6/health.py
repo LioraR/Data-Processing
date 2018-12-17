@@ -12,7 +12,8 @@ INPUT_CSV = "health.csv"
 reader = pandas.read_csv(INPUT_CSV)
 
 # remove data
-reader = reader[(reader['Indicator'] == 'Household net adjusted disposable income') | (reader['Indicator'] == 'Life expectancy')]
+reader = reader[(reader['Indicator'] == 'Household net adjusted disposable income') |
+                (reader['Indicator'] == 'Life expectancy')]
 reader = reader.drop(["LOCATION", "INDICATOR", "MEASURE", "Measure", "INEQUALITY", "Inequality",
                       "Unit Code", "Unit", "PowerCode Code", "PowerCode",
                       "Reference Period Code", "Reference Period", "Flag Codes", "Flags"],

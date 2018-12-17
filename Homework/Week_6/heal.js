@@ -6,7 +6,6 @@
 var margin = { top: 50, right: 50, bottom: 50, left: 50 },
       width = screen.width - margin.left - margin.right,
       height = 650 - margin.top - margin.bottom;
-var padding = 20;
 
 window.onload = function() {
 
@@ -22,7 +21,6 @@ window.onload = function() {
         var Health = response[0];
         var data = response[1];
         var life = response[2];
-        console.log(life)
 
         var format = d3.format(",");
 
@@ -105,9 +103,7 @@ window.onload = function() {
                })
                .on('click', function(d) {
                     d3.select("#chart").selectAll("*").remove().exit()
-                    console.log(d)
                     country = d.properties.name
-                    console.log(country)
                     lineChart(country)
                })
 
@@ -139,21 +135,6 @@ window.onload = function() {
               return d;
             })
 
-        // select the dict with life_expectancy and years
-        grandList = []
-        listY = []
-        listLE = []
-
-        for (i = 0; i < Object.keys(life).length; i++) {
-            lifeAndTime = Object.values(life)[i]
-            lifeE = Object.values(lifeAndTime)
-            years = Object.keys(lifeAndTime)
-
-            listY.push(years)
-            listLE.push(lifeE)
-            grandList.push(listY, listLE)
-        }
-
         // create SVG element
         var svg_line = d3.select("body")
               .append("svg")
@@ -163,7 +144,7 @@ window.onload = function() {
               .style('background', 'wit');
 
 
-      function lineChart(country = "Afghanistan") {
+      function lineChart(country) {
 
             // scaling x and y-as
             var xScale = d3.scaleLinear()
