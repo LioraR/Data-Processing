@@ -23,3 +23,5 @@ https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
 https://data.worldbank.org/indicator/SP.DYN.LE00.IN?end=2016&start=1960&view=chart
 http://bl.ocks.org/micahstubbs/8e15870eb432a21f0bc4d3d527b2d14f
 http://bl.ocks.org/micahstubbs/raw/8e15870eb432a21f0bc4d3d527b2d14f/a45e8709648cafbbf01c78c76dfa53e31087e713/world_countries.json
+
+In mijn localhost wordt er wel een linechart gemaakt als ik op een land klik maar op de website hierboven niet. Ik snap niet hoe dat komt. 
